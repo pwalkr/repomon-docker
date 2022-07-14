@@ -1,26 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 
 REPOSITORY_ROOT="${REPOSITORY_ROOT:-/data}"
-
-# If SSH_KEY private key is defined, write id_rsa for ssh-git
-if [ "$SSH_KEY" ]; then
-    privkey="$HOME/.ssh/id_rsa"
-    mkdir -p "$(dirname "$privkey")"
-    echo "$SSH_KEY" > "$privkey"
-    chmod -R 700 "$(dirname "$privkey")"
-    set -x
-    ssh-keygen -y -f "$privkey" > "$privkey".pub
-    { set +x; } 2>/dev/null
-fi
-
-if [ "$GIT_PASSWORD" ]; then
-    export GIT_ASKPASS=/usr/local/bin/askpass.sh
-    cat <<'EOF' > "$GIT_ASKPASS"
-#!/bin/sh
-echo $GIT_PASSWORD
-EOF
-    chmod +x "$GIT_ASKPASS"
-fi
 
 # If repository is not populated, clone
 if [ -z "$(ls "$REPOSITORY_ROOT" 2>/dev/null)" ]; then
@@ -45,4 +25,4 @@ if [ "$GIT_EMAIL" ]; then
     export GIT_COMMITTER_EMAIL="$GIT_EMAIL"
 fi
 
-/usr/local/bin/monitor.sh
+monitor.sh

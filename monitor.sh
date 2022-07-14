@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 POLL_DELAY="${POLL_DELAY:-60}"
 # 15 minutes from first seen change till commit
